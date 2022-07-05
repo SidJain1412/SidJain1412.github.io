@@ -1,0 +1,52 @@
+baseURL = 'http://sidjain1412.github.io/'
+languageCode = 'en-us'
+title = 'Siddharth Jain'
+theme = 'archie'
+copyright = "© Siddharth"
+pygmentsstyle = "monokai"
+pygmentscodefences = true
+pygmentscodefencesguesssyntax = true
+paginate = 4
+
+[params]
+favicon = "http://localhost:1313/favicon.png"
+mode = "toggle"
+useCDN = true
+subtitle = "Data Scientist @ [CleverTap](https://clevertap.com)"
+description = "Data Scientist @ CleverTap"
+aboutme = "**Hello world**"
+
+[[params.social]]
+name = "GitHub"
+icon = "github"
+url = "https://github.com/sidjain1412"
+
+[[params.social]]
+name = "Twitter"
+icon = "twitter"
+url = "https://twitter.com/sidjain1412/"
+
+[[params.social]]
+name = "LinkedIn"
+icon = "linkedin"
+url = "https://linkedin.com/in/siddharth-jain1412"
+
+[[menu.main]]
+name = "Home"
+url = "/"
+weight = 1
+
+[[menu.main]]
+name = "About"
+url = "/about"
+weight = 2
+
+[[menu.main]]
+name = "All posts"
+url = "/posts"
+weight = 3
+
+[[menu.main]]
+name = "Resume"
+url = "/resume_siddharth_jain.pdf"
+weight = 4

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Siddharth Jain</title>
+    <link>http://sidjain1412.github.io/</link>
+    <description>Recent content on Siddharth Jain</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© Siddharth</copyright>
+    <lastBuildDate>Wed, 15 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://sidjain1412.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Maximising Your A/B Test Outcomes with Multi Armed Bandits</title>
+      <link>http://sidjain1412.github.io/posts/multi-armed-bandits/</link>
+      <pubDate>Wed, 15 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://sidjain1412.github.io/posts/multi-armed-bandits/</guid>
+      <description>Traditional A/B testing has stuck around for decades and is an important tool in a marketer’s toolkit, but there also exist other techniques for testing, some that even perform better and combat the flaws of A/B testing. Let’s explore them in this blog&amp;hellip;
+Read the full blog</description>
+    </item>
+    
+    <item>
+      <title>How to Analyse Marketing Surveys</title>
+      <link>http://sidjain1412.github.io/posts/marketing-surveys/</link>
+      <pubDate>Mon, 30 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://sidjain1412.github.io/posts/marketing-surveys/</guid>
+      <description>How Do We Find Bivariate Insights From Survey Data?
+Create a pivot table/crosstab of the two variables you are considering. Calculate the Chi Square and p value to test for significance of the relationship between the variables. If significant, create heatmaps to find standout insights within the crosstab&amp;hellip; Read the full blog</description>
+    </item>
+    
+    <item>
+      <title>Data Integrity</title>
+      <link>http://sidjain1412.github.io/posts/data-integrity/</link>
+      <pubDate>Mon, 16 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://sidjain1412.github.io/posts/data-integrity/</guid>
+      <description>In today’s era of personalized marketing, a marketer is lost without rich customer data. But what many marketers forget while pushing millions of data points to the cloud is the importance of quality and the integrity of their data points&amp;hellip;
+Read the full blog</description>
+    </item>
+    
+  </channel>
+</rss>

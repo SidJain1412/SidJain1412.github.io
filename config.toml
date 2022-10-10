@@ -1,4 +1,4 @@
-baseURL = 'http://sidjain1412.github.io/'
+baseURL = 'https://sidjain1412.github.io/'
 languageCode = 'en-us'
 title = 'Siddharth Jain'
 theme = 'archie'
@@ -22,14 +22,19 @@ icon = "github"
 url = "https://github.com/sidjain1412"
 
 [[params.social]]
-name = "Twitter"
-icon = "twitter"
-url = "https://twitter.com/sidjain1412/"
+name = "Instagram"
+icon = "instagram"
+url = "https://www.instagram.com/__sidjain__/"
 
 [[params.social]]
 name = "LinkedIn"
 icon = "linkedin"
 url = "https://linkedin.com/in/siddharth-jain1412"
+
+[[params.social]]
+name = "Twitter"
+icon = "twitter"
+url = "https://twitter.com/sidjain1412/"
 
 [[menu.main]]
 name = "Home"

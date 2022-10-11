@@ -10,7 +10,7 @@ paginate = 4
 publishDir = "docs"
 
 [params]
-favicon = "http://localhost:1313/favicon.png"
+favicon = "https://sidjain1412.github.io/resume_siddharth_jain.pdf"
 mode = "toggle"
 useCDN = true
 subtitle = "Data Scientist @ [CleverTap](https://clevertap.com)"

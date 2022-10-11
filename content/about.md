@@ -10,4 +10,4 @@ I have a demonstrated history of applying my coding and analytical skills to a v
 - Python
 - AWS
 
-***[Resume](http://localhost:1313/resume_siddharth_jain.pdf)***
+***[Resume](https://sidjain1412.github.io/resume_siddharth_jain.pdf)***

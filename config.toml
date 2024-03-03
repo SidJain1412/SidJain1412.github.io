@@ -56,3 +56,6 @@ weight = 3
 name = "Resume"
 url = "/resume_siddharth_jain.pdf"
 weight = 4
+
+[markup.goldmark.renderer]
+unsafe = true

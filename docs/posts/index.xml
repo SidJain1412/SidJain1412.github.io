@@ -7,7 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© Siddharth</copyright>
-    <lastBuildDate>Fri, 12 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://sidjain1412.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 01 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://sidjain1412.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Garbett Plateau Trek</title>
+      <link>https://sidjain1412.github.io/posts/garbett-trek/</link>
+      <pubDate>Sun, 01 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://sidjain1412.github.io/posts/garbett-trek/</guid>
+      <description>A relatively easy (but long) trek near Karjat, just 90 minutes from Mumbai and a great weekend getaway
+I highly recommend it, so would quite a few folks at CleverTap
+Route: Map above has many comments
+🗺️ How To Reach: Train: Local train from Ghatkopar to Bhivpuri Road (CSMT→Karjat Fast Train), takes ~90 minutes
+Car: Drive to Diksal village, park near Shiv Temple (marked on the map) and descend back to there post the trek.</description>
+    </item>
+    
     <item>
       <title>Building a Streaming OpenAI App in Python</title>
       <link>https://sidjain1412.github.io/posts/streaming-api/</link>

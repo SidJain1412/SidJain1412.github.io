@@ -9,6 +9,10 @@ A relatively easy (but long) trek near Karjat, just 90 minutes from Mumbai and a
 
 I highly recommend it, so would quite a few folks at CleverTap
 
+<div style="text-align: center;">
+<img src="/images/garbett.jpeg" alt="drawing" style="width:400px;"/>
+</div>
+
 ### Route:
 
 <iframe src="https://www.google.com/maps/d/u/1/embed?mid=1ZHN1YYAUOioOPrRAUu8utBWLvksG_zk&ehbc=2E312F" width="800" height="600"></iframe>

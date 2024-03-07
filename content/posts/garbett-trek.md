@@ -4,6 +4,7 @@ description: "Small guide to this beautiful trek near Karjat"
 date: 2023-10-01
 draft: false
 ---
+<meta property="og:image" content="/images/garbett.jpeg"></meta>
 
 A relatively easy (but long) trek near Karjat, just 90 minutes from Mumbai and a great weekend getaway
 

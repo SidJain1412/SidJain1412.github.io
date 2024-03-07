@@ -5,6 +5,7 @@ date: 2023-10-01
 draft: false
 ---
 <meta property="og:image" content="https://sidjain1412.github.io/images/garbett.jpeg"></meta>
+<meta name="twitter:image" content="https://sidjain1412.github.io/images/garbett.jpeg"></meta>
 
 A relatively easy (but long) trek near Karjat, just 90 minutes from Mumbai and a great weekend getaway
 

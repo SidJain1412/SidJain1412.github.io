@@ -7,7 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© Siddharth</copyright>
-    <lastBuildDate>Sun, 01 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://sidjain1412.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 28 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://sidjain1412.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Why are you building what you&#39;re building?</title>
+      <link>https://sidjain1412.github.io/posts/useful-features/</link>
+      <pubDate>Thu, 28 Mar 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://sidjain1412.github.io/posts/useful-features/</guid>
+      <description>Every data professional has worked on a dashboard and wanted to cram all sorts of fancy charts/data points in it. Every data professional knows that no one is really going to use the dashboard properly.
+They&amp;rsquo;ll still want to make the dashboard as awesome (from their POV) as possible.
+Just so y&amp;#39;all know:
+Every time you push code, you appear on this real-time wall at the @github HQ. pic.twitter.com/rqfpDPDDjB</description>
+    </item>
+    
     <item>
       <title>Garbett Plateau Trek</title>
       <link>https://sidjain1412.github.io/posts/garbett-trek/</link>

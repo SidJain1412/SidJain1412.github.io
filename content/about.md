@@ -3,7 +3,7 @@ title: "About"
 draft: false
 ---
 
-Currently, I'm a Staff Data Scientist at [CleverTap](https://www.clevertap.com).
+Currently, I'm a Architect - Data Science at [CleverTap](https://www.clevertap.com).
 
 I have a demonstrated history of applying my coding and analytical skills to a variety of Machine Learning, Deep Learning, Statistical and Engineering projects.
 

@@ -10,7 +10,7 @@ paginate = 4
 publishDir = "docs"
 
 [params]
-favicon = "https://sidjain1412.github.io/favicon.png"
+favicon = "https://sidjain1412.github.io/images/favicon.png"
 mode = "toggle"
 useCDN = true
 subtitle = "Data Scientist @ [CleverTap](https://clevertap.com)"

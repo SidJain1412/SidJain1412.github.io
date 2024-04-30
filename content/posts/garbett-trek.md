@@ -14,13 +14,13 @@ I highly recommend it, so would quite a few folks at CleverTap
 <img src="/images/garbett.jpeg" alt="drawing" style="width:400px;"/>
 </div>
 
-### Route:
+## Route:
 
 <iframe src="https://www.google.com/maps/d/u/1/embed?mid=1ZHN1YYAUOioOPrRAUu8utBWLvksG_zk&ehbc=2E312F" width="800" height="600"></iframe>
 
 Map above has many comments
 
-### 🗺️ How To Reach:
+## 🗺️ How To Reach:
 
 - <b>Train:</b>
 
@@ -30,7 +30,7 @@ Local train from Ghatkopar to Bhivpuri Road (CSMT→Karjat Fast Train), takes ~9
 
 Drive to Diksal village, park near Shiv Temple (marked on the map) and descend back to there post the trek. Would not recommend since this would be ~30k steps, route on the map is easier and more pleasant.
 
-### Tips/ Notes:
+## Tips/ Notes:
 
 - Route shown in the map is about 23000 steps (~15km)
 - Couple of risky bits in monsoon near the top, but manageable even with beginners
@@ -38,7 +38,7 @@ Drive to Diksal village, park near Shiv Temple (marked on the map) and descend b
 - Medium crowd on Sunday mornings, yet to see a big group doing this trek
 - Local train after 6:30AM will be crowded
 
-### 🍜 What can I eat?
+## 🍜 What can I eat?
 
 - Bhivpuri Road station has a vada pav stall nearby (post 7AM)
 - Diskal village has general stores and small breakfast spots

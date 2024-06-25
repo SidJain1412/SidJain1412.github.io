@@ -1,7 +1,7 @@
 ---
 title: "Fearing nature is a survival skill: A Lesson from Irshalgad"
 description: "Temper your confidence in things outside your control"
-date: 2024-05-27
+date: 2024-06-24
 draft: false
 images:
     - images/Irshalgad.jpeg
@@ -23,3 +23,9 @@ I *love* it when people go for treks and appreciate the beauty of the Sahyadris,
 Inexperienced trekkers are not at fault as much as the trek leaders who don't insist on safety and preparedness. And even then, people need to understand the intrinsic risk of what they're doing and respect the fact that things can go wrong very suddenly.
 
 Please don't take that shortcut that saves you 3 steps.
+<br><br><br>
+<div style="text-align: center;">
+<img src="/images/irshalwadi.jpeg" alt="drawing" style="width:400px;"/>
+
+Irshalwadi (right)
+</div>

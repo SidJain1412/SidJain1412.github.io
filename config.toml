@@ -57,5 +57,10 @@ name = "Resume"
 url = "/resume_siddharth_jain.pdf"
 weight = 4
 
+[[menu.main]]
+name = "Bird Map"
+url = "https://sidjain1412.github.io/MumbaiBirdMap"
+weight = 4
+
 [markup.goldmark.renderer]
 unsafe = true

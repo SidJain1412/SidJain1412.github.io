@@ -59,7 +59,7 @@ weight = 4
 
 [[menu.main]]
 name = "Bird Map!"
-url = "/birdmap"
+url = "/MumbaiBirdMap"
 weight = 5
 
 [markup.goldmark.renderer]

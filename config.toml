@@ -6,7 +6,7 @@ copyright = "© Siddharth"
 pygmentsstyle = "monokai"
 pygmentscodefences = true
 pygmentscodefencesguesssyntax = true
-paginate = 4
+paginate = 5
 publishDir = "public"
 
 [params]
@@ -58,7 +58,7 @@ url = "/resume_siddharth_jain.pdf"
 weight = 4
 
 [[menu.main]]
-name = "Bird Map!"
+name = "Bird Map 🦅!"
 url = "/MumbaiBirdMap"
 weight = 5
 

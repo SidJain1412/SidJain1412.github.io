@@ -35,7 +35,6 @@ Each vector is assigned to a random layer. Number of vectors per layer increases
 Random assignment, but each vector appears at its assigned level and on all levels below it. Hence, all vectors are present on Layer 0 (bottom layer).
 
 ### How does search work in HNSW?
-
 An easy way to think about it: The higher levels are like highways, then major roads, then streets, then the final address on the bottom layer. The upper levels point you towards the region where the final address is, instead of exploring each street.
 
 In more detail, it works in 2 phases:
@@ -50,6 +49,35 @@ Here, there are 2 heaps.
 
 The final top-K neighbors come from the result heap.
 The time complexity is O(log N).
+
+### How do inserts work?
+Insertion happens one element at a time.
+
+1. **Assign Layer**: The new element is assigned a maximum layer $l$ based on an exponential distribution (making higher layers scarcer).
+2. **Find Entry Point**: Start from the top layer. Greedily traverse the graph to find the closest node to the new element in the current layer. Move down to the next layer using this node as the entry point. Repeat until you reach layer $l$.
+3. **Connect Neighbors**: From layer $l$ down to 0:
+    - Perform a search to find the $M$ closest neighbors to the new element.
+    - Add bidirectional edges between the new element and these neighbors.
+    - If a neighbor now has too many connections (exceeding $M_{max}$), prune the connections (usually keeping the closest and most diverse ones) to maintain the graph properties.
+
+### How do deletions work?
+The original HNSW paper does not describe a deletion algorithm, and HNSW is generally optimized for append-only or static datasets.
+
+However, practical implementations like **pgvector** handle deletions using a "soft delete" combined with a vacuum process:
+
+1. **Soft Delete**: When a row is deleted, it isn't immediately removed from the HNSW graph. It is just marked as "dead". The graph structure remains intact, and searches still traverse these nodes but ignore them in the final result.
+2. **Vacuum / Repair**: To reclaim space and fix the graph, `pgvector` uses a **VACUUM** process (specifically `RepairGraph` pass).
+
+If you don't run VACUUM, the "dead" nodes pile up, wasting memory and potentially slowing down searches (as the algorithm wastes time traversing deleted nodes).
+
+### Are results reproducible?
+The search results are **deterministic** for a fixed, static graph. If you run the same query twice on the exact same index (and the index hasn't changed), you get the same result.
+
+However, the **index construction is non-deterministic**:
+- **Random Layer Assignment**: The layer assignment for each vector is random.
+- **Parallelism**: If the index is built using multiple threads (which `pgvector` supports), the order of insertions varies. Since the graph structure depends on the order of insertion, the final graph will differ between runs.
+
+So, if you build the index twice on the same data, you might get slightly different graphs, which leads to slightly different recall or result orderings for the same query.
 
 ### What does EF parameter control?
 EF stands for exploration factor.
@@ -66,25 +94,13 @@ There are 2 EF parameters, EF construction and EF search.
 M controls the number of connections each node has in the graph.
 Graph size is roughly a bit more than ≈ `num_vectors * M * pointer_size`.
 
-### How do deletions work?
-The original HNSW paper does not describe a deletion algorithm, and HNSW is generally optimized for append-only or static datasets.
+### What recall should I expect? Is it fine practically if I don't have 100% recall?
+Recall is the ratio of true nearest neighbors that the query successfully returns. To get 100% recall, your queries would be super slow. For most practical use cases, 95%+ recall should be good enough, but it depends on your application.
 
-However, practical implementations like **pgvector** handle deletions using a "soft delete" combined with a vacuum process:
-
-1. **Soft Delete**: When a row is deleted, it isn't immediately removed from the HNSW graph. It is just marked as "dead". The graph structure remains intact, and searches still traverse these nodes but ignore them in the final result.
-2. **Vacuum / Repair**: To reclaim space and fix the graph, `pgvector` uses a **VACUUM** process (specifically `RepairGraph` pass).
-
-If you don't run VACUUM, the "dead" nodes pile up, wasting memory and potentially slowing down searches (as the algorithm wastes time traversing deleted nodes).
-
-### How do inserts work?
-Insertion happens one element at a time.
-
-1. **Assign Layer**: The new element is assigned a maximum layer $l$ based on an exponential distribution (making higher layers scarcer).
-2. **Find Entry Point**: Start from the top layer. Greedily traverse the graph to find the closest node to the new element in the current layer. Move down to the next layer using this node as the entry point. Repeat until you reach layer $l$.
-3. **Connect Neighbors**: From layer $l$ down to 0:
-    - Perform a search to find the $M$ closest neighbors to the new element.
-    - Add bidirectional edges between the new element and these neighbors.
-    - If a neighbor now has too many connections (exceeding $M_{max}$), prune the connections (usually keeping the closest and most diverse ones) to maintain the graph properties.
+### Which similarity metric should I use?
+Depends on what you are embedding:
+- **Cosine similarity**: When vector magnitude doesn't matter as much (good for most language/image embeddings).
+- **L2 distance**: When magnitude is important.
 
 ### What other options do I have?
 IVFFlat is also a commonly used index, which is faster to build and has a smaller memory footprint, but gives lower recall (usually) and is harder to tune.
@@ -96,25 +112,7 @@ HNSW may not be the best choice if:
 - You have very frequent writes.
 - Memory is very precious.
 
-### Which similarity metric should I use?
-Depends on what you are embedding:
-- **Cosine similarity**: When vector magnitude doesn't matter as much (good for most language/image embeddings).
-- **L2 distance**: When magnitude is important.
-
-### What recall should I expect? Is it fine practically if I don't have 100% recall?
-Recall is the ratio of true nearest neighbors that the query successfully returns. To get 100% recall, your queries would be super slow. For most practical use cases, 95%+ recall should be good enough, but it depends on your application.
-
-### Are results reproducible?
-Valid question given this is an ANN...
-
-The search results are **deterministic** for a fixed, static graph. If you run the same query twice on the exact same index (and the index hasn't changed), you get the same result.
-
-However, the **index construction is non-deterministic**:
-- **Random Layer Assignment**: The layer assignment for each vector is random.
-- **Parallelism**: If the index is built using multiple threads (which `pgvector` supports), the order of insertions varies. Since the graph structure depends on the order of insertion, the final graph will differ between runs.
-
-So, if you build the index twice on the same data, you might get slightly different graphs, which leads to slightly different recall or result orderings for the same query.
-
 ### Resources
 - [Exploring the Internals of pgvector](https://www.linkedin.com/pulse/exploring-internals-pgvector-zhao-song-ynpqf)
 - [Pinecone HNSW Guide](https://www.pinecone.io/learn/series/faiss/hnsw/)
+- [Understanding how Vector DBs work](https://youtu.be/035I2WKj5F0?si=EMS8Mo2ahsUQGwh2)

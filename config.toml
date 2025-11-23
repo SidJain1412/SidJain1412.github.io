@@ -6,7 +6,7 @@ copyright = "© Siddharth"
 pygmentsstyle = "monokai"
 pygmentscodefences = true
 pygmentscodefencesguesssyntax = true
-paginate = 5
+pagination.pagerSize = 5
 publishDir = "public"
 
 [params]
@@ -14,8 +14,12 @@ favicon = "https://sidjain1412.github.io/images/favicon.png"
 mode = "toggle"
 useCDN = true
 subtitle = "Data Scientist @ [CleverTap](https://clevertap.com)"
-description = "Data Scientist @ CleverTap"
+description = "Technical blog by Siddharth Jain covering data science, machine learning, vector databases, and A/B testing"
 aboutme = "**Hello world**"
+katex = true
+author = "Siddharth Jain"
+twitter = "sidjain1412"
+og_image = "https://sidjain1412.github.io/images/HNSW.png"
 
 [[params.social]]
 name = "GitHub"

@@ -25,7 +25,7 @@ Vector searches work on similarity, not exact matches. Indexing makes nearest-ne
 Vector DBs index relationships, not actual values. Making this indexing efficient is important for quick queries.
 
 ### What is HNSW?
-HNSW stands for **Hierarchical Navigable Small World** graphs. It implements a high-recall approximate nearest-neighbor (ANN) search for large collections of vectors.
+HNSW stands for **Hierarchical Navigable Small World** graphs. It implements a high-recall approximate nearest-neighbor (ANN) search for large collections of vectors. I know the name is a mouthful but it'll be clearer by the end of this post!
 
 <br>
 <div style="text-align: center;">
@@ -37,6 +37,15 @@ HNSW structure
 HNSW organizes vectors into a layered graph where each layer helps narrow down the search, so the query vector is compared to relatively few other vectors.
 
 At each layer from top to bottom, the number of nodes increases. This helps us find the approximate region where the similar items may be, refining the region at each layer.
+
+### What is a "small world"?
+The **small world** idea comes from social networks and the classic “six degrees of separation” concept: even in a very large network, you can reach almost anyone with just a few hops.
+
+In graph terms, a small-world network has:
+- **Short paths** between most pairs of nodes (you only need a few steps to get from one point to another), and
+- **Local clustering**, where neighbors of a node are often connected to each other.
+
+HNSW uses this property so that, starting from almost any node, a greedy walk over the graph can very quickly get close to the region where your nearest neighbors live, without having to visit every node.
 
 ### How are the number of layers decided?
 Each vector is assigned to a random layer. The number of vectors per layer increases exponentially as we go down.

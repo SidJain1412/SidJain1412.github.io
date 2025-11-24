@@ -8,7 +8,13 @@ draft: false
 While making some vector DB related decisions at work, I tried to find details regarding indexing of vector DBs, but I couldn't find a single source that explained HNSW in enough detail. So I thought I'd write a short blog post that clarifies the basics along with answers to the questions I had!
 
 ### What is a vector?
-A numerical representation of data (text, images, audio, etc.). These are usually high-dimensional arrays of floats (768 or more) which are the outputs of deep learning models, encoding the meaning of the data into numbers.
+A numerical representation of data (text, images, audio, etc.). At a simple level, you can think of a vector as an ordered list of numbers like `[0.2, -1.3, 4.5]`.
+
+In machine learning, these numbers are usually high-dimensional arrays of floats (often 768 dimensions or more). They are produced by deep learning models which learn to encode different aspects of the input (topic, style, semantics, etc.) into numbers, so that **similar things end up with similar vectors**.
+
+You don't usually interpret individual dimensions by hand. Instead, you compare vectors (using cosine similarity or L2 distance) to see which pieces of data are closest in this learned space (i.e. similar to each other)
+
+Find a more detailed explanation [**here**](https://cloud.google.com/blog/topics/developers-practitioners/meet-ais-multitool-vector-embeddings)
 
 ### What is a vector DB?
 A database with special handling for vector storage, indexing, and retrieval.
@@ -47,12 +53,25 @@ In more detail, it works in 2 phases:
 Start from a random entry point at the top level. For each layer, find the neighbor closest to the query till no closer neighbor exists, then drop a layer and repeat.
 
 **Best-first search (aka EF-search) at layer 0:**
-Here, there are 2 heaps:
-1. Candidate queue (min-heap): All the nodes to consider expanding next.
-2. Result heap (max-heap): The best possible current candidates, up to size EF (explained below).
+Here, there are 2 heaps that are used only during the search process (the actual vectors stay in the index graph):
+1. **Candidate queue (min-heap)**: Nodes we might want to expand next (potentially good neighbors whose neighbors we haven't explored yet).
+2. **Result heap (max-heap)**: The best current candidates (nearest neighbors found so far), up to size **EF** (explained below).
 
 The final top-K neighbors come from the result heap.
-The time complexity is O(log N).
+
+In practice, the number of nodes explored grows slowly with the dataset size because of the layered small-world structure, so the search behaves roughly like **O(log N)** (though this is empirical, not a strict guarantee).
+
+### What does EF parameter control?
+EF stands for exploration factor.
+There are 2 EF parameters: **EF construction** and **EF search**.
+
+**efConstruction** is used when building the index and for insertion. It controls the number of candidate neighbors considered when a new vector is inserted in the graph.
+
+Higher values mean a more connected graph (hence better recall/accuracy), but they slow down index build time and increase memory consumption.
+
+**efSearch** is used during query time. It controls the size of the dynamic candidate list (the result heap and candidate queue) when a query is being run.
+
+A higher value means the algorithm explores more potential neighbors while searching. Similar to efConstruction, a higher value gives higher accuracy, but slower speed.
 
 ### How do inserts work?
 Insertion happens one element at a time.
@@ -84,24 +103,27 @@ However, the **index construction is non-deterministic**:
 
 So, if you build the index twice on the same data, you might get slightly different graphs, which leads to slightly different recall or result orderings for the same query.
 
-### What does EF parameter control?
-EF stands for exploration factor.
-There are 2 EF parameters: EF construction and EF search.
-
-**efConstruction** is used when building the index and for insertion. It controls the number of candidate neighbors considered when a new vector is inserted in the graph.
-
-Higher number means a more connected graph (hence better recall (accuracy)), but it slows down index build time and increases memory consumption.
-
-**efSearch** is used during query time. It controls the size of the dynamic candidate list when a query is being run.
-
-A higher value means the algorithm explores more potential neighbors while searching. Similar to efConstruction, a higher value gives higher accuracy, but slower speed.
-
 ### How large is the memory footprint for this index?
 - Vectors aren't duplicated across layers, links are.
-- The main tuning parameter is M (maximum degree of the graph).
+- The main tuning parameter is **M** (maximum degree of the graph).
 
 M controls the number of connections each node has in the graph.
 Graph size is roughly a bit more than ≈ `num_vectors * M * pointer_size`.
+
+### How do I choose M? Can I change it later?
+You typically configure **M** when you **create** the index (for example, as a parameter when you define the HNSW index in `pgvector` or another vector DB).
+
+Higher **M** means:
+- More links per node → denser graph.
+- Better recall and more robustness (easier to “route around” bad connections or deletions).
+- Higher memory usage and slower index builds/inserts, and slightly slower queries.
+
+Lower **M** means:
+- Fewer links per node → sparser graph.
+- Less memory and faster inserts/builds.
+- Lower recall, especially for harder queries.
+
+Once an index is built, **M is effectively fixed** for that index. To change it, you usually need to **rebuild the index** with a new value of M (recreate the index and reinsert the data).
 
 ### What recall should I expect? Is it fine practically if I don't have 100% recall?
 Recall is the ratio of true nearest neighbors that the query successfully returns. To get 100% recall, your queries would be super slow.
@@ -109,9 +131,16 @@ Recall is the ratio of true nearest neighbors that the query successfully return
 For most practical use cases, 95%+ recall should be good enough, but it depends on your application.
 
 ### Which similarity metric should I use?
-Depends on what you are embedding:
-- **Cosine similarity**: When vector magnitude doesn't matter as much (good for most language/image embeddings).
-- **L2 distance**: When magnitude is important.
+Depends on what you are embedding and whether the **magnitude (length)** of the vector carries meaning.
+
+- **Cosine similarity**: Looks at the angle between vectors and ignores magnitude (it effectively normalizes vectors).
+  - Good when you care about **direction** (semantic meaning) but not strength.
+  - Typical for language/image embeddings, which are often normalized by the model.
+
+- **L2 distance**: Looks at full Euclidean distance, so both direction and magnitude matter.
+  - Use this when the **scale** of the embedding is meaningful:
+    - E.g. models where higher-magnitude vectors mean “stronger” signals or higher confidence.
+    - Numeric or feature-engineered vectors where absolute values and ranges are important.
 
 ### What other options do I have?
 IVFFlat is also a commonly used index, which is faster to build and has a smaller memory footprint, but gives lower recall (usually) and is harder to tune.

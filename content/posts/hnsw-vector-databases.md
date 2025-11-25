@@ -142,12 +142,12 @@ For most practical use cases, 95%+ recall should be good enough, but it depends 
 ### Which similarity metric should I use?
 Depends on what you are embedding and whether the **magnitude (length)** of the vector carries meaning.
 
-- **Cosine similarity**: Looks at the angle between vectors and ignores magnitude (it effectively normalizes vectors).
-  - Good when you care about **direction** (semantic meaning) but not strength.
-  - Typical for language/image embeddings, which are often normalized by the model.
+1. **Cosine similarity**: Looks at the angle between vectors and ignores magnitude (it effectively normalizes vectors).
+    - Good when you care about **direction** (semantic meaning) but not strength.
+    - Typical for language/image embeddings, which are often normalized by the model.
 
-- **L2 distance**: Looks at full Euclidean distance, so both direction and magnitude matter.
-  - Use this when the **scale** of the embedding is meaningful:
+2. **L2 distance**: Looks at full Euclidean distance, so both direction and magnitude matter.
+    - Use this when the **scale** of the embedding is meaningful:
     - E.g. models where higher-magnitude vectors mean “stronger” signals or higher confidence.
     - Numeric or feature-engineered vectors where absolute values and ranges are important.
 

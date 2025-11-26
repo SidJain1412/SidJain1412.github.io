@@ -8,7 +8,7 @@ draft: false
 While making some vector DB related decisions at work, I tried to find details regarding indexing of vector DBs, but I couldn't find a single source that explained HNSW in enough detail. So I thought I'd write a short blog post that clarifies the basics along with answers to the questions I had!
 
 ### What is a vector?
-A numerical representation of data (text, images, audio, etc.). At a simple level, you can think of a vector as an ordered list of numbers like `[0.2, -1.3, 4.5]`.
+A numerical representation of data (text, images, audio, etc.). At a simple level, you can think of a vector as an ordered list of numbers like `[0.2, -1.3, 4.5]` that a computer uses to describe something.
 
 In machine learning, these numbers are usually high-dimensional arrays of floats (often 768 dimensions or more). They are produced by deep learning models which learn to encode different aspects of the input (topic, style, semantics, etc.) into numbers, so that **similar things end up with similar vectors**.
 
@@ -17,10 +17,10 @@ You don't usually interpret individual dimensions by hand. Instead, you compare 
 Find a more detailed explanation [**here**](https://cloud.google.com/blog/topics/developers-practitioners/meet-ais-multitool-vector-embeddings)
 
 ### What is a vector DB?
-A database with special handling for vector storage, indexing, and retrieval.
+A database with special handling for vector storage, indexing, and retrieval. In other words, it’s a database built to store these long number lists (embeddings) and quickly find “similar” ones.
 
 ### Why index a vector DB? And why not index it similar to how we index a normal DB?
-Vector searches work on similarity, not exact matches. Indexing makes nearest-neighbor search faster, instead of comparing to each vector in the entire DB (O(n)).
+Vector searches work on similarity, not exact matches. Indexing is just building a side data structure (like the index of a book) that makes nearest-neighbor search faster, instead of comparing to each vector in the entire DB (O(n)).
 
 Vector DBs index relationships, not actual values. Making this indexing efficient is important for quick queries.
 
@@ -34,35 +34,48 @@ HNSW stands for **Hierarchical Navigable Small World** graphs. It implements a h
 HNSW structure
 </div>
 
+An easy way to think about it: The higher levels are like highways, then major roads, then streets, then the final address on the bottom layer. The upper levels point you towards the region where the final address is, instead of exploring each street.
+
 HNSW organizes vectors into a layered graph where each layer helps narrow down the search, so the query vector is compared to relatively few other vectors.
 
 At each layer from top to bottom, the number of nodes increases. This helps us find the approximate region where the similar items may be, refining the region at each layer.
 
 ### What is a "small world"?
-The **small world** idea comes from social networks and the classic “six degrees of separation” concept: even in a very large network, you can reach almost anyone with just a few hops.
+The **small world** idea comes from social networks and the classic “[six degrees of separation](https://en.wikipedia.org/wiki/Small-world_experiment)” concept: even in a very large network, you can reach almost anyone with just a few hops.
 
 In graph terms, a small-world network has:
 - **Short paths** between most pairs of nodes (you only need a few steps to get from one point to another), and
 - **Local clustering**, where neighbors of a node are often connected to each other.
 
-HNSW uses this property so that, starting from almost any node, a greedy walk over the graph can very quickly get close to the region where your nearest neighbors live, without having to visit every node.
+
+<br>
+<div style="text-align: center;">
+  <img src="/images/SmallWorld.png" style="width:400px;"/>
+  <br>
+  6 Degrees of Separation: Any 2 people in the USA can be linked by a chain of <= 6 people
+  <a href="https://en.wikipedia.org/wiki/Small-world_experiment">
+    (source)
+  </a>
+</div>
+
+
+
+HNSW uses this property so that, starting from almost any node, a greedy walk (always moving to the neighbor that is currently closest) over the graph can very quickly get close to the region where your nearest neighbors live, without having to visit every node.
 
 ### How are the number of layers decided?
-Each vector is assigned to a random layer. The number of vectors per layer increases exponentially as we go down.
+Each vector is assigned to a random layer. The number of vectors per layer increases quickly as we go down, so most points live only on the bottom layers and a few random ones reach higher layers.
 
 ### How do we decide which vector goes on which layer?
 Random assignment, but each vector appears at its assigned level and on all levels below it. Hence, all vectors are present on Layer 0 (bottom layer).
 
 ### How does search work in HNSW?
-An easy way to think about it: The higher levels are like highways, then major roads, then streets, then the final address on the bottom layer. The upper levels point you towards the region where the final address is, instead of exploring each street.
-
-In more detail, it works in 2 phases:
+The highway analogy explained it shortly, but in more detail, it works in 2 phases:
 
 **Greedy descent through upper layers:**
-Start from a random entry point at the top level. For each layer, find the neighbor closest to the query till no closer neighbor exists, then drop a layer and repeat.
+Start from a random entry point at the top level. For each layer, repeatedly move to the neighbor closest to the query until no closer neighbor exists, then drop a layer and repeat.
 
 **Best-first search (aka EF-search) at layer 0:**
-Here, there are 2 heaps that are used only during the search process (the actual vectors stay in the index graph):
+Here, there are 2 priority lists (heaps) that are used only during the search process (the actual vectors stay in the index graph):
 1. **Candidate queue (min-heap)**: Nodes we might want to expand next (potentially good neighbors whose neighbors we haven't explored yet).
 2. **Result heap (max-heap)**: The best current candidates (nearest neighbors found so far), up to size **EF** (explained below).
 
@@ -74,39 +87,39 @@ In practice, the number of nodes explored grows slowly with the dataset size bec
 EF stands for exploration factor.
 There are 2 EF parameters: **EF construction** and **EF search**.
 
-**efConstruction** is used when building the index and for insertion. It controls the number of candidate neighbors considered when a new vector is inserted in the graph.
+**ef_construction** is used when building the index and for insertion. It controls the number of candidate neighbors considered when a new vector is inserted in the graph (how widely we look around when we add a new point).
 
 Higher values mean a more connected graph (hence better recall/accuracy), but they slow down index build time and increase memory consumption.
 
-**efSearch** is used during query time. It controls the size of the dynamic candidate list (the result heap and candidate queue) when a query is being run.
+**efSearch** is used during query time. It controls the size of the dynamic candidate list (the result heap and candidate queue) when a query is being run (how many extra candidates we are willing to examine).
 
 A higher value means the algorithm explores more potential neighbors while searching. Similar to efConstruction, a higher value gives higher accuracy, but slower speed.
 
 ### How do inserts work?
 Insertion happens one element at a time.
 
-1. **Assign Layer**: The new element is assigned a maximum layer $l$ based on an exponential distribution (making higher layers scarcer).
+1. **Assign Layer**: The new element is assigned a maximum layer $l$ (higher layers are scarcer; most points only appear in lower layers).
 2. **Find Entry Point**: Start from the top layer. Greedily traverse the graph to find the closest node to the new element in the current layer.
    Move down to the next layer using this node as the entry point. Repeat until you reach layer $l$.
 3. **Connect Neighbors**: From layer $l$ down to 0:
     - Perform a search to find the $M$ closest neighbors to the new element.
-    - Add bidirectional edges between the new element and these neighbors.
+    - Add bidirectional edges (connections) between the new element and these neighbors.
     - If a neighbor now has too many connections (exceeding $M_{max}$), prune the connections (usually keeping the closest and most diverse ones) to maintain the graph properties.
 
 ### How do deletions work?
 The original HNSW paper does not describe a deletion algorithm, and HNSW is generally optimized for append-only or static datasets.
 
-However, practical implementations like **pgvector** handle deletions using a "soft delete" combined with a vacuum process:
+However, practical implementations like **pgvector** handle deletions using a "soft delete" combined with a cleanup / vacuum process:
 
-1. **Soft Delete**: When a row is deleted, it isn't immediately removed from the HNSW graph. It is just marked as "dead". The graph structure remains intact, and searches still traverse these nodes but ignore them in the final result.
-2. **Vacuum / Repair**: To reclaim space and fix the graph, `pgvector` uses a **VACUUM** process (specifically `RepairGraph` pass).
+1. **Soft Delete**: When a row is deleted, it isn't immediately removed from the HNSW graph. It is just marked as "dead" (logically deleted). The graph structure remains intact, and searches still traverse these nodes but ignore them in the final result.
+2. **Vacuum / Repair**: To reclaim space and fix the graph, `pgvector` uses a **VACUUM** process (specifically `RepairGraph` pass) — you can think of this as a background cleanup that actually removes dead nodes and reconnects their neighbors.
 
 If you don't run VACUUM, the "dead" nodes pile up, wasting memory and potentially slowing down searches (as the algorithm wastes time traversing deleted nodes).
 
 ### Are results reproducible?
 The search results are **deterministic** for a fixed, static graph. If you run the same query twice on the exact same index (and the index hasn't changed), you get the same result.
 
-However, the **index construction is non-deterministic**:
+However, the **index construction is non-deterministic** (two index builds on the same data can give slightly different graphs):
 - **Random Layer Assignment**: The layer assignment for each vector is random.
 - **Parallelism**: If the index is built using multiple threads (which `pgvector` supports), the order of insertions varies. Since the graph structure depends on the order of insertion, the final graph will differ between runs.
 
@@ -116,7 +129,7 @@ So, if you build the index twice on the same data, you might get slightly differ
 - Vectors aren't duplicated across layers, links are.
 - The main tuning parameter is **M** (maximum degree of the graph).
 
-M controls the number of connections each node has in the graph.
+M controls the number of connections each node has in the graph (how many neighbors each point can link to).
 Graph size is roughly a bit more than ≈ `num_vectors * M * pointer_size`.
 
 ### How do I choose M? Can I change it later?
@@ -131,6 +144,17 @@ Lower **M** means:
 - Fewer links per node → sparser graph.
 - Less memory and faster inserts/builds.
 - Lower recall, especially for harder queries.
+
+
+<br>
+<div style="text-align: center;">
+  <img src="/images/GraphConnections.png" alt="Graph with decreasing connectivity (lower M) from left to right" style="width:600px;"/>
+  <br>
+  Decreasing M from left to right
+  <a href="https://inviqa.com/blog/storing-graphs-database-sql-meets-social-network">
+    (source)
+  </a>
+</div>
 
 Once an index is built, **M is effectively fixed** for that index. To change it, you usually need to **rebuild the index** with a new value of M (recreate the index and reinsert the data).
 
@@ -151,8 +175,18 @@ Depends on what you are embedding and whether the **magnitude (length)** of the 
     - E.g. models where higher-magnitude vectors mean “stronger” signals or higher confidence.
     - Numeric or feature-engineered vectors where absolute values and ranges are important.
 
+<br>
+<div style="text-align: center;">
+  <img src="/images/SimMetrics.png"style="width:600px;"/>
+  <br>
+  <a href="https://www.linkedin.com/pulse/math-similarity-cohesion-manu-nellutla/">
+    (source)
+  </a>
+</div>
+
+
 ### What other options do I have?
-IVFFlat is also a commonly used index, which is faster to build and has a smaller memory footprint, but gives lower recall (usually) and is harder to tune.
+[IVFFlat](https://www.tigerdata.com/blog/nearest-neighbor-indexes-what-are-ivfflat-indexes-in-pgvector-and-how-do-they-work) is also a commonly used index, which is faster to build and has a smaller memory footprint, but gives lower recall (usually) and is harder to tune.
 
 HNSW gives a more reliable balance of speed and accuracy.
 

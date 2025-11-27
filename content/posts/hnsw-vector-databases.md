@@ -19,8 +19,20 @@ Find a more detailed explanation [**here**](https://cloud.google.com/blog/topics
 ### What is a vector DB?
 A database with special handling for vector storage, indexing, and retrieval. In other words, it’s a database built to store these long number lists (embeddings) and quickly find “similar” ones.
 
+### How does vector similarity work? (simple example)
+Imagine you have three short texts:
+- A: "I love trekking"
+- B: "Hiking is enjoyable in monsoon"
+- C: "The stock market isn't doing well"
+
+A model turns each of these into a vector. Texts A and B end up with vectors that point in a similar “direction” (because they are both about outdoor activities), while C points in a very different direction (because it’s about finance).
+
+When a user searches for "good time for trekking", we turn the query into a vector and compare it to all document vectors. A and B have high similarity scores, C has a low score, so we return A and B. This is why vector similarity search is useful: it can match based on *meaning*, not just exact words.
+
 ### Why index a vector DB? And why not index it similar to how we index a normal DB?
 Vector searches work on similarity, not exact matches. Indexing is just building a side data structure (like the index of a book) that makes nearest-neighbor search faster, instead of comparing to each vector in the entire DB (O(n)).
+
+If you only have a few thousand vectors, scanning all of them for each query is usually fine. But once you have millions of vectors and many queries per second, an O(n) scan for every query becomes too slow and expensive. At that point you need an approximate nearest neighbor index like HNSW to get "good enough" results much faster.
 
 Vector DBs index relationships, not actual values. Making this indexing efficient is important for quick queries.
 
@@ -34,7 +46,7 @@ HNSW stands for **Hierarchical Navigable Small World** graphs. It implements a h
 HNSW structure
 </div>
 
-An easy way to think about it: The higher levels are like highways, then major roads, then streets, then the final address on the bottom layer. The upper levels point you towards the region where the final address is, instead of exploring each street.
+An easy way to think about it: The higher levels are like highways, then major roads, then streets, then the final address on the bottom layer. The upper levels point you towards the region where the final address is, instead of exploring each street. Just that the assignment of each point as a highway, road, or street is random (more details below).
 
 HNSW organizes vectors into a layered graph where each layer helps narrow down the search, so the query vector is compared to relatively few other vectors.
 
@@ -62,22 +74,22 @@ In graph terms, a small-world network has:
 
 HNSW uses this property so that, starting from almost any node, a greedy walk (always moving to the neighbor that is currently closest) over the graph can very quickly get close to the region where your nearest neighbors live, without having to visit every node.
 
-### How are the number of layers decided?
-Each vector is assigned to a random layer. The number of vectors per layer increases quickly as we go down, so most points live only on the bottom layers and a few random ones reach higher layers.
-
-### How do we decide which vector goes on which layer?
-Random assignment, but each vector appears at its assigned level and on all levels below it. Hence, all vectors are present on Layer 0 (bottom layer).
+### How are the HNSW layers built (and why)?
+- **Chance of being in higher layers:** When a new vector is added, it is **always** placed on layer 0. Then, for each higher layer (1, 2, 3, …), we randomly decide whether it also appears there. Fewer and fewer vectors appear as we go up in the layers.
+- **All points on the bottom:** Because every vector is on layer 0, that layer (the "streets") always contains the full dataset, so you can always do a precise local search there if needed.
+- **Local connections by similarity:** On each layer, we connect a point only to its nearest neighbors. We never do a global "find best connections" step.
+- **Why this works:** Higher layers have very few points, so they act like long‑distance shortcuts (highways). Lower layers have many points, so once you are in roughly the right area, you can walk the dense local graph to find exact neighbors.
 
 ### How does search work in HNSW?
 The highway analogy explained it shortly, but in more detail, it works in 2 phases:
 
-**Greedy descent through upper layers:**
+**Step 1: Walk down through the coarse layers (greedy descent):**
 Start from a random entry point at the top level. For each layer, repeatedly move to the neighbor closest to the query until no closer neighbor exists, then drop a layer and repeat.
 
-**Best-first search (aka EF-search) at layer 0:**
-Here, there are 2 priority lists (heaps) that are used only during the search process (the actual vectors stay in the index graph):
-1. **Candidate queue (min-heap)**: Nodes we might want to expand next (potentially good neighbors whose neighbors we haven't explored yet).
-2. **Result heap (max-heap)**: The best current candidates (nearest neighbors found so far), up to size **EF** (explained below).
+**Step 2: Carefully explore around the best candidates (best-first search / EF-search) at layer 0:**
+Here, there are 2 small ranked lists (priority queues) that are used only during the search process (the actual vectors stay in the index graph):
+1. **Candidate queue**: Nodes we might want to expand next (potentially good neighbors whose neighbors we haven't explored yet). The algorithm always picks the currently closest candidate from this list to explore further.
+2. **Result list**: The best current candidates (nearest neighbors found so far), kept up to size **EF** (explained below) and roughly sorted from closest to farthest.
 
 The final top-K neighbors come from the result heap.
 

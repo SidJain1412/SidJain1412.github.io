@@ -78,7 +78,7 @@ HNSW uses this property so that, starting from almost any node, a greedy walk (a
 - **Chance of being in higher layers:** When a new vector is added, it is **always** placed on layer 0. Then, for each higher layer (1, 2, 3, …), we randomly decide whether it also appears there. Fewer and fewer vectors appear as we go up in the layers.
 - **All points on the bottom:** Because every vector is on layer 0, that layer (the "streets") always contains the full dataset, so you can always do a precise local search there if needed.
 - **Local connections by similarity:** On each layer, we connect a point only to its nearest neighbors. We never do a global "find best connections" step.
-- **Why this works:** Higher layers have very few points, so they act like long‑distance shortcuts (highways). Lower layers have many points, so once you are in roughly the right area, you can walk the dense local graph to find exact neighbors.
+- **Why this works:** Higher layers have very few points, so they act like long‑distance shortcuts (highways). Lower layers have many points, so once you are in roughly the right area, you can walk the dense local graph to find exact neighbors. The top layers are simply made up of those few points that also got placed in higher layers and then connected to their closest neighbors there, so they naturally become good shortcuts without any extra planning.
 
 ### How does search work in HNSW?
 The highway analogy explained it shortly, but in more detail, it works in 2 phases:

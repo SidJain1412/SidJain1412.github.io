@@ -1,7 +1,7 @@
 ---
 title: "HNSW for Vector Databases Explained"
 description: "Understanding HNSW (Hierarchical Navigable Small World) algorithm for efficient vector similarity search"
-date: 2025-12-09
+date: 2025-12-08
 draft: false
 ---
 

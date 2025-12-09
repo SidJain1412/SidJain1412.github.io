@@ -16,6 +16,13 @@ You don't usually interpret individual dimensions by hand. Instead, you compare 
 
 Find a more detailed explanation [**here**](https://cloud.google.com/blog/topics/developers-practitioners/meet-ais-multitool-vector-embeddings)
 
+<br>
+<div style="text-align: center;">
+<img src="/images/vectors_google.png" alt="vectors" style="width:600px;"/>
+
+Similar words get grouped similarly by good embedding models
+</div>
+
 ### What is a vector DB?
 A database with special handling for vector storage, indexing, and retrieval. In other words, it’s a database built to store these long number lists (embeddings) and quickly find “similar” ones.
 
@@ -206,6 +213,11 @@ HNSW may not be the best choice if:
 - You have a very small dataset (just do exact search).
 - You have very frequent writes.
 - Memory is very precious.
+
+### Conclusion
+HNSW gives us a practical way to do fast, “good enough” nearest-neighbor search on huge collections of embeddings, without scanning everything on every query. By organizing points into a small-world, multi-layer graph, it lets us jump quickly across the space on sparse upper layers and then refine locally on the dense bottom layer. 
+
+With just a few knobs like **M** and **efSearch**, you can trade off speed, memory, and recall as per your application’s needs.
 
 ### Resources
 - [Exploring the Internals of pgvector](https://www.linkedin.com/pulse/exploring-internals-pgvector-zhao-song-ynpqf)

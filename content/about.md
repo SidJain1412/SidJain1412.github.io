@@ -16,3 +16,13 @@ I have a good grasp of the MarTech business + where and how data science can be 
 ***[Resume](https://sidjain1412.github.io/resume_siddharth_jain.pdf)***
 
 Outside of work, I love birdwatching and trekking, check out my [Instagram](https://www.instagram.com/__sidjain__/) for photos
+
+<div class="insta-grid">
+  <div class="insta-item">
+    {{< instagram DILbm2CqX8v >}}
+  </div>
+  <div class="insta-item">
+    {{< instagram DTZeSb_jMGY >}}
+  </div>
+  </div>
+</div>

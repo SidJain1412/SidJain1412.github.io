@@ -29,7 +29,7 @@ defaultTitle = "Siddharth Jain | Data Science, ML, A/B Testing, Vector Databases
 personDescription = "Siddharth Jain is a data science practitioner focused on machine learning, experimentation, vector databases, and applied AI."
 
 [params.verification]
-# google = ""
+google = "DuIYr5Py7xtVyVstU4VlHWKgvWk6u7YA0k5YdBuXzq4"
 
 [[params.social]]
 name = "GitHub"

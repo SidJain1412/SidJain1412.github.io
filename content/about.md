@@ -1,5 +1,6 @@
 ---
 title: "About"
+description: "About Siddharth Jain, a data science practitioner working on machine learning, analytics, experimentation, and applied AI."
 draft: false
 ---
 

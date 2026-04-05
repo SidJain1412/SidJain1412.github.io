@@ -25,7 +25,7 @@ Inexperienced trekkers are not at fault as much as the trek leaders who don't in
 Please don't take that shortcut that saves you 3 steps.
 <br><br><br>
 <div style="text-align: center;">
-<img src="/images/irshalwadi.jpeg" alt="drawing" style="width:400px;"/>
+<img src="/images/irshalwadi.jpeg" alt="Irshalwadi village near Irshalgad after the landslide" style="width:400px;"/>
 
 Irshalwadi (right)
 </div>

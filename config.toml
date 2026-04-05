@@ -8,6 +8,7 @@ pygmentscodefences = true
 pygmentscodefencesguesssyntax = true
 pagination.pagerSize = 5
 publishDir = "public"
+disableKinds = ["taxonomy", "term"]
 
 [params]
 favicon = "https://sidjain1412.github.io/images/favicon.png"
@@ -18,8 +19,17 @@ description = "Technical blog by Siddharth Jain covering data science, machine l
 aboutme = "**Hello world**"
 katex = true
 author = "Siddharth Jain"
+authorBio = "Data science and machine learning practitioner writing about vector databases, experimentation, applied AI, and analytics."
 twitter = "sidjain1412"
 og_image = "https://sidjain1412.github.io/images/HNSW.png"
+mainSections = ["posts"]
+
+[params.seo]
+defaultTitle = "Siddharth Jain | Data Science, ML, A/B Testing, Vector Databases"
+personDescription = "Siddharth Jain is a data science practitioner focused on machine learning, experimentation, vector databases, and applied AI."
+
+[params.verification]
+# google = ""
 
 [[params.social]]
 name = "GitHub"

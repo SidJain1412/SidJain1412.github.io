@@ -105,3 +105,7 @@ Your job shouldn't end when the code hits production, that’s when it actually 
 In a world where everyone can build, building is no longer the differentiator. What matters is whether anyone cares.
 
 And that part hasn’t gotten any faster.
+
+<div style="text-align: center;">
+<img src="/images/Throughput_vs_TAM.png" alt="Engineering throughput vs userbase" style="width:700px;"/>
+</div>

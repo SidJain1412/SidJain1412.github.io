@@ -3,6 +3,9 @@ title: "The Growing Gap Between Engineering and Users"
 description: "Coding agents' impact on engineering and what agents can't fix"
 date: 2026-04-05
 draft: false
+image: "images/Throughput_vs_TAM.png"
+images:
+    - images/Throughput_vs_TAM.png
 ---
 <style>
     .tweet-container {

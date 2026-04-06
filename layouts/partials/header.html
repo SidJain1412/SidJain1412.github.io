@@ -23,8 +23,14 @@
 {{- end -}}
 
 {{- $ogImage := .Site.Params.og_image -}}
-{{- with .Params.images -}}
-  {{- $first := index . 0 -}}
+{{- $pageImage := .Params.image -}}
+{{- if not $pageImage -}}
+  {{- with .Params.images -}}
+    {{- $pageImage = index . 0 -}}
+  {{- end -}}
+{{- end -}}
+{{- with $pageImage -}}
+  {{- $first := . -}}
   {{- if hasPrefix $first "http://" -}}
     {{- $ogImage = $first -}}
   {{- else if hasPrefix $first "https://" -}}

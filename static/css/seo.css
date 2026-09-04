@@ -1,0 +1,20 @@
+/* Semantic heading changes preserve the existing Archie appearance. */
+.site-description-title {
+  font-family: 'Fira Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.site-description-title::before {
+  content: none;
+}
+
+.list-item .title {
+  font-size: 1.2rem;
+}
+
+.list-item .title::before {
+  content: '# ';
+}

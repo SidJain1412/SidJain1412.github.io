@@ -23,6 +23,7 @@ authorBio = "Data science and machine learning practitioner writing about vector
 twitter = "sidjain1412"
 og_image = "https://sidjain1412.github.io/images/HNSW.png"
 mainSections = ["posts"]
+customCSS = ["css/seo.css"]
 
 [params.seo]
 defaultTitle = "Siddharth Jain | Data Science, ML, A/B Testing, Vector Databases"
@@ -58,12 +59,12 @@ weight = 1
 
 [[menu.main]]
 name = "About"
-url = "/about"
+url = "/about/"
 weight = 2
 
 [[menu.main]]
 name = "All Posts"
-url = "/posts"
+url = "/posts/"
 weight = 3
 
 [[menu.main]]
@@ -73,7 +74,7 @@ weight = 4
 
 [[menu.main]]
 name = "Bird Map 🦅!"
-url = "/MumbaiBirdMap"
+url = "/mumbaibirdmap/"
 weight = 5
 
 [markup.goldmark.renderer]

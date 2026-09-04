@@ -1,4 +1,8 @@
 {{- $sameAs := slice -}}
+{{- $personID := printf "%s#person" .Site.BaseURL -}}
+{{- $websiteID := printf "%s#website" .Site.BaseURL -}}
+{{- $isPaginatedHome := and .IsHome (gt .Paginator.PageNumber 1) -}}
+{{- $isPrimaryHome := and .IsHome (not $isPaginatedHome) -}}
 {{- range .Site.Params.social -}}
   {{- if .url -}}
     {{- $sameAs = $sameAs | append .url -}}
@@ -34,27 +38,46 @@
   {{- end -}}
 {{- end -}}
 
-{{- if or .IsHome (eq .RelPermalink "/about/") -}}
+{{- if or $isPrimaryHome (eq .RelPermalink "/about/") -}}
 <script type="application/ld+json">
 {{ dict
   "@context" "https://schema.org"
   "@type" "Person"
+  "@id" $personID
   "name" .Site.Params.author
-  "url" .Permalink
+  "url" .Site.BaseURL
   "description" $description
+  "jobTitle" "Data Science Architect"
+  "worksFor" (dict "@type" "Organization" "name" "CleverTap" "url" "https://clevertap.com/")
+  "knowsAbout" (slice "data science" "machine learning" "experimentation" "vector databases" "applied AI")
   "sameAs" $sameAs
 | jsonify | safeJS }}
 </script>
 {{- end -}}
 
-{{- if .IsHome -}}
+{{- if $isPrimaryHome -}}
 <script type="application/ld+json">
 {{ dict
   "@context" "https://schema.org"
   "@type" "WebSite"
+  "@id" $websiteID
   "name" .Site.Title
   "url" .Site.BaseURL
   "description" $description
+  "inLanguage" .Site.Language.Lang
+| jsonify | safeJS }}
+</script>
+{{- end -}}
+
+{{- if eq .RelPermalink "/about/" -}}
+<script type="application/ld+json">
+{{ dict
+  "@context" "https://schema.org"
+  "@type" "ProfilePage"
+  "mainEntity" (dict "@id" $personID)
+  "name" .Title
+  "url" .Permalink
+  "inLanguage" .Site.Language.Lang
 | jsonify | safeJS }}
 </script>
 {{- end -}}
@@ -71,6 +94,7 @@
   "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
   "url" .Permalink
   "image" (slice $image)
+  "inLanguage" .Site.Language.Lang
   "author" (dict "@type" "Person" "name" .Site.Params.author "url" .Site.BaseURL)
   "publisher" (dict "@type" "Person" "name" .Site.Params.author "url" .Site.BaseURL)
 | jsonify | safeJS }}

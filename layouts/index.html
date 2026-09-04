@@ -1,0 +1,29 @@
+{{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
+{{ $paginator := .Paginate (where $pages "Params.hidden" "ne" true) }}
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Lang }}">
+	{{ partial "header.html" . }}
+	<body>
+		<div class="pattern"></div>
+		<div class="content">
+			{{ partial "head.html" . }}
+			<main class="list">
+				<div class="site-description">
+					{{- if isset .Site.Params "subtitle" -}}
+					<h1 class="site-description-title">{{ .Site.Params.Subtitle | .Page.RenderString }}</h1>
+					{{- end -}}
+				</div>
+				{{ range $paginator.Pages }}
+				<section class="list-item">
+					<h2 class="title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+					<time datetime="{{ .Date.Format "2006-01-02" }}">{{ dateFormat ":date_medium" .Date }}{{ if .Draft }} <span class="draft-label">DRAFT</span> {{ end }}</time>
+					<br>{{ template "partials/pagedescription.html" . }}
+					<a class="readmore" href="{{ .RelPermalink }}">Read more <span aria-hidden="true">⟶</span></a>
+				</section>
+				{{ end }}
+				{{ template "partials/paginator.html" . }}
+			</main>
+			{{ partial "footer.html" . }}
+		</div>
+	</body>
+</html>

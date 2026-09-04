@@ -1,8 +1,16 @@
 {{- $siteTitle := .Site.Title -}}
 {{- $defaultTitle := .Site.Params.seo.defaultTitle | default $siteTitle -}}
+{{- $isPaginatedHome := and .IsHome (gt .Paginator.PageNumber 1) -}}
+{{- $isPrimaryHome := and .IsHome (not $isPaginatedHome) -}}
+{{- $canonicalURL := .Permalink -}}
+{{- if $isPaginatedHome -}}
+  {{- $canonicalURL = absURL .Paginator.URL -}}
+{{- end -}}
 {{- $title := "" -}}
-{{- if .IsHome -}}
+{{- if $isPrimaryHome -}}
   {{- $title = $defaultTitle -}}
+{{- else if $isPaginatedHome -}}
+  {{- $title = printf "Posts archive, page %d | %s" .Paginator.PageNumber $siteTitle -}}
 {{- else if eq .RelPermalink "/about/" -}}
   {{- $title = printf "About Siddharth Jain | Data Science, ML, Analytics" -}}
 {{- else if .IsPage -}}
@@ -12,7 +20,7 @@
 {{- end -}}
 
 {{- $description := "" -}}
-{{- if .IsHome -}}
+{{- if $isPrimaryHome -}}
   {{- $description = .Site.Params.seo.personDescription | default .Site.Params.description -}}
 {{- else if .Description -}}
   {{- $description = .Description -}}
@@ -40,7 +48,7 @@
   {{- end -}}
 {{- end -}}
 
-<head lang="{{ .Site.Language.Lang }}">
+<head>
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>{{ $title }}</title>
@@ -51,21 +59,21 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="{{ $description }}" />
-	<meta name="robots" content="index,follow,max-image-preview:large" />
-	<link rel="canonical" href="{{ .Permalink }}" />
+	<meta name="robots" content="{{ if .Params.noindex }}noindex,follow{{ else }}index,follow{{ end }},max-image-preview:large" />
+	<link rel="canonical" href="{{ $canonicalURL }}" />
 	<meta property="og:image" content="{{ $ogImage }}" />
-	<meta property="og:url" content="{{ .Permalink }}" />
+	<meta property="og:url" content="{{ $canonicalURL }}" />
 	<meta property="og:site_name" content="{{ $siteTitle }}" />
 	<meta property="og:title" content="{{ $title }}" />
 	<meta property="og:description" content="{{ $description }}" />
-	<meta property="og:locale" content="en_us" />
+	<meta property="og:locale" content="en_US" />
 	<meta property="og:type" content="{{ if eq .Section "posts" }}article{{ else }}website{{ end }}" />
 	{{- if eq .Section "posts" }}
 	<meta property="article:section" content="{{ .Section }}" />
 	<meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}" />
 	<meta property="article:modified_time" content="{{ (.Lastmod | default .Date).Format "2006-01-02T15:04:05Z07:00" }}" />
 	{{- end }}
-	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="{{ $title }}" />
 	<meta name="twitter:description" content="{{ $description }}" />
 	<meta name="twitter:image" content="{{ $ogImage }}" />
@@ -78,14 +86,10 @@
 
 	{{- partial "seo-schema.html" . -}}
 	{{- if isset .Site.Params "social" -}}
-	  {{- range $index, $key := .Site.Params.Social -}}
-	    {{- if hasPrefix $key.icon "simple:" -}}
-	      {{- if (.Site.Params.useCDN | default false) -}}
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-icons-font@v13/font/simple-icons.min.css" type="text/css">
-	      {{- else -}}
-		<link rel="stylesheet" href="{{ (resources.Get "css/simple-icons.css" | fingerprint).Permalink }}" type="text/css">
-	      {{- end -}}
-	    {{- end -}}
+	  {{- if (.Site.Params.useCDN | default false) -}}
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-icons-font@v13/font/simple-icons.min.css" type="text/css">
+	  {{- else -}}
+	<link rel="stylesheet" href="{{ (resources.Get "css/simple-icons.css" | fingerprint).Permalink }}" type="text/css">
 	  {{- end -}}
 	{{- end -}}
 	{{ if .Site.Params.useCDN | default false -}}
@@ -152,8 +156,7 @@
 
 	{{- if isset .Site.Params "customcss" }}
 		{{ range .Site.Params.customCSS }}
-		{{ $customstyle := resources.Get . | fingerprint }}
-		<link rel="stylesheet" type="text/css" href="{{ $customstyle.Permalink }}">
+		<link rel="stylesheet" type="text/css" href="{{ absURL . }}">
 		{{ end }}
 	{{- end -}}
 	{{- range .Site.Params.customJS }}

@@ -110,5 +110,5 @@ In a world where everyone can build, building is no longer the differentiator. W
 And that part hasn’t gotten any faster.
 
 <div style="text-align: center;">
-<img src="/images/Throughput_vs_TAM.png" alt="Engineering throughput vs userbase" width="1000" height="600" loading="lazy" decoding="async" style="width:700px;"/>
+<img src="/images/Throughput_vs_TAM.png" alt="Engineering throughput vs userbase" width="1000" height="600" loading="lazy" decoding="async" style="width:700px; height:auto;"/>
 </div>

@@ -18,7 +18,7 @@ Find a more detailed explanation [**here**](https://cloud.google.com/blog/topics
 
 <br>
 <div style="text-align: center;">
-<img src="/images/vectors_google.png" alt="Diagram showing semantically similar words clustered together as vectors" style="width:600px;"/>
+<img src="/images/vectors_google.png" alt="Diagram showing semantically similar words clustered together as vectors" width="800" height="305" loading="lazy" decoding="async" style="width:600px;"/>
 
 Similar words get grouped similarly by good embedding models
 </div>
@@ -48,7 +48,10 @@ HNSW stands for **Hierarchical Navigable Small World** graphs. It implements a h
 
 <br>
 <div style="text-align: center;">
-<img src="/images/HNSW.png" alt="Illustration of the hierarchical layers used in an HNSW index" style="width:800px;"/>
+<picture>
+  <source srcset="/images/HNSW.webp" type="image/webp">
+  <img src="/images/HNSW.png" alt="Illustration of the hierarchical layers used in an HNSW index" width="800" height="437" loading="lazy" decoding="async" style="width:800px;"/>
+</picture>
 
 HNSW structure
 </div>
@@ -69,7 +72,7 @@ In graph terms, a small-world network has:
 
 <br>
 <div style="text-align: center;">
-  <img src="/images/SmallWorld.png" alt="Small-world network illustration showing short connection paths across a graph" style="width:400px;"/>
+  <img src="/images/SmallWorld.png" alt="Small-world network illustration showing short connection paths across a graph" width="660" height="495" loading="lazy" decoding="async" style="width:400px;"/>
   <br>
   6 Degrees of Separation: Any 2 people in the USA can be linked by a chain of <= 6 people
   <a href="https://en.wikipedia.org/wiki/Small-world_experiment">
@@ -167,7 +170,7 @@ Lower **M** means:
 
 <br>
 <div style="text-align: center;">
-  <img src="/images/GraphConnections.png" alt="Graph with decreasing connectivity (lower M) from left to right" style="width:600px;"/>
+  <img src="/images/GraphConnections.png" alt="Graph with decreasing connectivity (lower M) from left to right" width="606" height="166" loading="lazy" decoding="async" style="width:600px;"/>
   <br>
   Decreasing M from left to right
   <a href="https://inviqa.com/blog/storing-graphs-database-sql-meets-social-network">
@@ -196,7 +199,7 @@ Depends on what you are embedding and whether the **magnitude (length)** of the 
 
 <br>
 <div style="text-align: center;">
-  <img src="/images/SimMetrics.png" alt="Comparison diagram of cosine similarity and Euclidean distance" style="width:600px;"/>
+  <img src="/images/SimMetrics.png" alt="Comparison diagram of cosine similarity and Euclidean distance" width="1280" height="634" loading="lazy" decoding="async" style="width:600px;"/>
   <br>
   <a href="https://www.linkedin.com/pulse/math-similarity-cohesion-manu-nellutla/">
     (source)

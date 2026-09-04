@@ -4,7 +4,7 @@ description: "Temper your confidence in things outside your control"
 date: 2024-06-24
 draft: false
 images:
-    - images/Irshalgad.jpeg
+    - images/Irshalgad.webp
 ---
 
 [*Man dies after 120 foot jump in Dabhosa waterfall*](https://www.news18.com/india/man-dies-after-120-foot-jump-from-dabhosa-waterfall-in-maharashtra-friend-in-critical-condition-8879354.html)
@@ -25,7 +25,7 @@ Inexperienced trekkers are not at fault as much as the trek leaders who don't in
 Please don't take that shortcut that saves you 3 steps.
 <br><br><br>
 <div style="text-align: center;">
-<img src="/images/irshalwadi.jpeg" alt="Irshalwadi village near Irshalgad after the landslide" style="width:400px;"/>
+<img src="/images/irshalwadi.jpeg" alt="Irshalwadi village near Irshalgad after the landslide" width="700" height="394" loading="lazy" decoding="async" style="width:400px;"/>
 
 Irshalwadi (right)
 </div>

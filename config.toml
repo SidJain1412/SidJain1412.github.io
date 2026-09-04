@@ -21,7 +21,7 @@ katex = true
 author = "Siddharth Jain"
 authorBio = "Data science and machine learning practitioner writing about vector databases, experimentation, applied AI, and analytics."
 twitter = "sidjain1412"
-og_image = "https://sidjain1412.github.io/images/HNSW.png"
+og_image = "https://sidjain1412.github.io/images/HNSW-og.jpg"
 mainSections = ["posts"]
 customCSS = ["css/seo.css"]
 

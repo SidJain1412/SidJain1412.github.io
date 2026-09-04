@@ -4,14 +4,17 @@ description: "Small guide to this beautiful trek near Karjat"
 date: 2023-10-01
 draft: false
 images: 
-    -  images/garbett.jpeg
+    -  images/garbett.webp
 ---
 A relatively easy (but long) trek near Karjat, just 90 minutes from Mumbai and a great weekend getaway
 
 I highly recommend it, so would quite a few folks at CleverTap
 
 <div style="text-align: center;">
-<img src="/images/garbett.jpeg" alt="View from halfway up the Garbett Plateau trek near Karjat" style="width:400px;"/>
+<picture>
+  <source srcset="/images/garbett.webp" type="image/webp">
+  <img src="/images/garbett.jpeg" alt="View from halfway up the Garbett Plateau trek near Karjat" width="400" height="225" loading="lazy" decoding="async" style="width:400px;"/>
+</picture>
 </div>
 
 ## Route:

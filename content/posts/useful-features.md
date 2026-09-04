@@ -4,7 +4,7 @@ description: "Building useful data science features"
 date: 2024-03-28
 draft: false
 images:
-    - images/dashboard.png
+    - images/dashboard.webp
 ---
 <style>
     .tweet-container {

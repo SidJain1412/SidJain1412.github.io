@@ -26,7 +26,7 @@ mainSections = ["posts"]
 customCSS = ["css/seo.css"]
 
 [params.seo]
-defaultTitle = "Siddharth Jain | Data Science, ML, A/B Testing, Vector Databases"
+defaultTitle = "Siddharth Jain | Applied Data Science & AI"
 personDescription = "Siddharth Jain is a data science practitioner focused on machine learning, experimentation, vector databases, and applied AI."
 
 [params.verification]

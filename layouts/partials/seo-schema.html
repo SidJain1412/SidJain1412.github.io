@@ -95,8 +95,8 @@
   "url" .Permalink
   "image" (slice $image)
   "inLanguage" .Site.Language.Lang
-  "author" (dict "@type" "Person" "name" .Site.Params.author "url" .Site.BaseURL)
-  "publisher" (dict "@type" "Person" "name" .Site.Params.author "url" .Site.BaseURL)
+  "author" (dict "@id" $personID "@type" "Person" "name" .Site.Params.author "url" .Site.BaseURL)
+  "publisher" (dict "@id" $personID "@type" "Person" "name" .Site.Params.author "url" .Site.BaseURL)
 | jsonify | safeJS }}
 </script>
 {{- end -}}

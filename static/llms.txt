@@ -1,0 +1,26 @@
+# Siddharth Jain
+
+> Personal website of Siddharth Jain, a data science practitioner writing about applied AI, machine learning, experimentation, vector databases, and useful data products.
+
+## About
+
+- [About Siddharth Jain](https://sidjain1412.github.io/about/): professional background, interests, and contact links.
+- [All posts](https://sidjain1412.github.io/posts/): the complete article archive.
+- [Resume](https://sidjain1412.github.io/resume_siddharth_jain.pdf): professional resume in PDF format.
+
+## Technical writing
+
+- [HNSW for Vector Databases Explained](https://sidjain1412.github.io/posts/hnsw-vector-databases/): practical explanation of vector embeddings, HNSW layers, search, M, efSearch, recall, memory, and similarity metrics.
+- [The Growing Gap Between Engineering and Users](https://sidjain1412.github.io/posts/engg-product-user-gap/): reflections on coding-agent throughput, product value, and engineering decisions.
+- [Why are you building what you're building?](https://sidjain1412.github.io/posts/useful-features/): lessons on building data-science features that customers actually use.
+
+## Field notes
+
+- [Fearing nature is a survival skill](https://sidjain1412.github.io/posts/fear-nature/): a first-person lesson about trek safety and overconfidence at Irshalgad.
+- [Garbett Plateau Trek](https://sidjain1412.github.io/posts/garbett-trek/): a practical trek guide near Karjat and Mumbai.
+
+## Profiles
+
+- [GitHub](https://github.com/sidjain1412)
+- [LinkedIn](https://linkedin.com/in/siddharth-jain1412)
+- [Instagram](https://www.instagram.com/__sidjain__/)

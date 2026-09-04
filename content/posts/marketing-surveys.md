@@ -3,6 +3,9 @@ title: How to Analyse Marketing Surveys
 description: "Bivariate Analysis and Statistical Significance"
 date: 2021-08-30
 draft: false
+noindex: true
+sitemap:
+  disable: true
 ---
 How Do We Find Bivariate Insights From Survey Data?
 

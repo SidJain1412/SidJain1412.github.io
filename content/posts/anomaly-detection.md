@@ -3,6 +3,9 @@ title: Anomaly Detection for Time Series Data
 description: "Anomaly Detection for Time Series Data"
 date: 2022-09-26
 draft: false
+noindex: true
+sitemap:
+  disable: true
 ---
 The basics of time series data, various types of anomalies in it, and an overview of popular techniques for anomaly detection...
 

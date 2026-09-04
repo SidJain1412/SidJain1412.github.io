@@ -3,6 +3,9 @@ title: "Building a Streaming OpenAI App in Python"
 description: "Create a quick and robust Streaming API with FastAPI"
 date: 2023-05-12
 draft: false
+noindex: true
+sitemap:
+  disable: true
 ---
 In this blog, I’ll go over the basics of FastAPI, Query validations and Streaming APIs , and we’ll build an API that generates a marketing campaign strategy for the brand given in the input.
 

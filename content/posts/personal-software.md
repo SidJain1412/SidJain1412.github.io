@@ -1,6 +1,7 @@
 ---
 title: "Where Is The Personal Software Revolution?"
 description: "Developers are in it, when will non-developers really catch up?"
+image: "images/personal-software-og.png"
 date: 2026-10-16
 draft: false
 ---
